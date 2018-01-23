@@ -1,0 +1,16 @@
+.board {list-style: none;}
+.board li {
+	width: 200px; 
+	height: 200px;
+	margin:0 5px 5px 0;
+	float: left;
+}
+
+.tails{
+	background: #99abc7; 
+	cursor: pointer;
+}
+.tails:hover{background: #7490bd}
+.heads{background: #2f62b6}
+
+.line-end + li{clear: left}

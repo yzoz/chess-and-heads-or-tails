@@ -1,0 +1,29 @@
+{
+  "name": "chess-and-heads-or-tails",
+  "version": "1.0.0",
+  "description": "Chess && (Heads || Tails)",
+  "main": "js/app.jsx",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "browserify -t [ babelify --presets [ react ] ] js/app.jsx | uglifyjs -c > js/app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:yzoz/chess-and-heads-or-tails.git"
+  },
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/yzoz/chess-and-heads-or-tails/issues"
+  },
+  "homepage": "https://github.com/yzoz/chess-and-heads-or-tails",
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-preset-react": "^6.24.1",
+    "babelify": "^8.0.0",
+    "create-react-class": "^15.6.2",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "uglifyify": "^4.0.5"
+  }
+}
