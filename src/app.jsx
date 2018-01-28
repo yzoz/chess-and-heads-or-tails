@@ -3,24 +3,33 @@ const ReactDOM = require('react-dom');
 
 const numHor = 4;
 const numVert = 4;
-const numMatch = 2;
 
 const numAll = numHor * numVert;
 
-let checked = {
-  id: false,
-  family: false
-};
+const defCollor = '#99abc7';
+const squareSize = Math.ceil(75 / numVert)
 
-let checking = {
-  id: false,
-  family: false,
-  prev: false,
-  bgcolor: false,
-  cursor: false,
-  isit: false,
-  isdouble: false
-};
+function reChecked() {
+  return ({
+    id: false,
+    family: false
+  });
+}
+
+function reChecking() {
+  return ({
+    id: false,
+    family: false,
+    prev: false,
+    class: 'tails',
+    color: defCollor,
+    isit: false,
+    isdouble: false
+  });
+}
+
+let checked = reChecked();
+let checking = reChecking();
 
 function shuffle(arr) {
   arr.sort(function(a, b){return 0.5 - Math.random()});
@@ -41,7 +50,7 @@ function genSquares() {
       'color': ellColor
     });
 
-    if (i % numMatch == 0) {
+    if (i % 2 == 0) {
       j++;
       ellColor = randomColor()
     }
@@ -63,6 +72,8 @@ class Square extends React.Component {
     let prev = checked.id ? checked.id : false;
     let isIt = this.props.id == prev ? true : false;
     let isDouble = this.props.family == checked.family ? true : false;
+    let cssClass = prev && !isIt ? 'tails' : 'heads';
+    let color = prev && !isIt ? defCollor : this.props.color;
     checked = {
       id: this.props.id,
       family: this.props.family
@@ -71,82 +82,64 @@ class Square extends React.Component {
       id: this.props.id,
       family: this.props.family,
       prev: prev,
-      bgcolor: this.props.color,
-      cursor: 'default',
+      class: cssClass,
+      color: color,
       isit: isIt,
       isdouble: isDouble
     }
   }
   render() {
-    console.log('checking: ', checking);
-    
-    if (checking.isit === false) {
-      if (checking.isdouble === true) {
-        let family = document.querySelectorAll('*[data-family="' + checking.family + '"]');
-        [].forEach.call(family, function(el) {
-          el.style.visibility = 'hidden';
+    if (checking.id != false) {
+      console.log('checking: ', checking);
+      let el = document.getElementById(checking.id)
+      el.className = checking.class;
+      el.style.backgroundColor = checking.color;
+      if (checking.isit === false) {
+        if (checking.isdouble === true) {
+          let family = document.querySelectorAll('*[data-family="' + checking.family + '"]');
+          [].forEach.call(family, function(el) {
+            el.style.visibility = 'hidden';
+          });
           console.log('hide: ', checking.family);
-        });
-        checked = {
-          id: false,
-          family: false
-        }
-        checking = {
-          id: false,
-          family: false,
-          prev: false,
-          bgcolor: false,
-          cursor: false,
-          isit: false,
-          isdouble: false
-        }
-      } else {
-        if (checking.prev != false) {
-          checking.bgcolor = '';
-          checking.cursor = '';
-          document.getElementById(checking.prev).style.backgroundColor = '';
-          document.getElementById(checking.prev).style.cursor = '';
-          console.log('go back: ', checking.id, checking.prev);
-          checked = {
-            id: false,
-            family: false
-          }
-          checking = {
-            id: false,
-            family: false,
-            prev: false,
-            bgcolor: false,
-            isit: false,
-            isdouble: false
-          }
+          checked = reChecked();
+          checking = reChecking();
+        } else if (checking.prev != false) {
+          el = document.getElementById(checking.prev);
+          el.className = checking.class;
+          el.style.backgroundColor = defCollor;
+          console.log('restate: ', checking.id, checking.prev);
+          checked = reChecked();
+          checking = reChecking();
         }
       }
     }
+    console.log('+++');
     return (<li 
-              className={this.props.class}
-              style={{
-                backgroundColor: checking.bgcolor,
-                cursor: checking.cursor
+              className={checking.class}
+              style = {{
+                clear: this.props.clear,
+                width: squareSize + 'vh',
+                height: squareSize + 'vh',
+                backgroundColor: checking.color
               }}
-              data-family={this.props.family}
-              id={this.props.id}
-              onClick={this.flip} />);
-    }
+              data-color = {this.props.color}
+              data-family = {this.props.family}
+              id = {this.props.id}
+              onClick = {this.flip} />);
+  }
 }
 
 function Board(props) {
   const data = props.data;
   const listItems = data.map(function(item, index) {
-    ellClass = 'tails';
-    if ((index + 1) % numHor == 0) {
-      ellClass = ellClass + ' line-end';
-    };
+    clear = ((index + 1) % numHor == 1) ? 'left' : 'none';
     return (
-    <Square key={index}
-            family={item.family}
-            color={item.color}
-            class={ellClass}
-            id={item.id} />
+    <Square key = {index}
+            family = {item.family}
+            color = {item.color}
+            class = 'tails'
+            clear = {clear}
+            id = {item.id} />
     );
   });
   console.log('listItems: ', listItems);
