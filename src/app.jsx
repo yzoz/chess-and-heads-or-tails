@@ -1,7 +1,5 @@
 const React = require('react');
 const ReactDOM = require('react-dom');
-//const Redux = require('redux');
-//const ReactRedux = require('react-redux');
 
 const numHor = 4;
 const numVert = 4;

@@ -22,10 +22,8 @@
     "babel-preset-react": "^6.24.1",
     "babelify": "^8.0.0",
     "create-react-class": "^15.6.2",
-    "redux": "^3.7.2",
     "react": "^16.2.0",
     "react-dom": "^16.2.0",
-    "react-redux": "^5.0.6",
     "uglifyify": "^4.0.5"
   }
 }
